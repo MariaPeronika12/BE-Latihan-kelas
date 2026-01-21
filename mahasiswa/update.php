@@ -1,37 +1,50 @@
 <?php
+// Menghubungkan ke database
 include '../db.php';
 
+// Memberitahu client bahwa response berupa JSON
 header('Content-Type: application/json');
 
-$id      = $_POST['id'];
-$nim     = $_POST['nim'];
-$nama    = $_POST['nama'];
-$alamat  = $_POST['alamat'];
-$no_telp = $_POST['no_telp'];
+// Mengambil data dari POST
+// mood_id digunakan untuk menentukan data mana yang akan di-update
+$mood_id = $_POST['mood_id'];
 
+// Mengambil mood baru
+$mood = $_POST['mood'];
+
+// Mengambil catatan baru
+$note = $_POST['note'];
+
+// Menyiapkan query UPDATE ke tabel mood_tracking
 $stmt = $conn->prepare("
-    UPDATE tb_mahasiswa 
-    SET nim = ?, nama = ?, alamat = ?, no_telp = ?
-    WHERE id = ?
+    UPDATE mood_tracking
+    SET mood = ?, note = ?
+    WHERE mood_id = ?
 ");
-$stmt->bind_param("ssssi", $nim, $nama, $alamat, $no_telp, $id);
 
+// Mengikat data ke query
+// s = string (mood)
+// s = string (note)
+// i = integer (mood_id)
+$stmt->bind_param("ssi", $mood, $note, $mood_id);
+
+// Menjalankan query UPDATE
 if ($stmt->execute()) {
 
+    // Jika berhasil
     echo json_encode([
         "status"  => "success",
-        "message" => "Data berhasil diperbarui",
+        "message" => "Mood berhasil diperbarui",
         "data"    => [
-            "id"      => $id,
-            "nim"     => $nim,
-            "nama"    => $nama,
-            "alamat"  => $alamat,
-            "no_telp" => $no_telp
+            "mood_id" => $mood_id,
+            "mood"    => $mood,
+            "note"    => $note
         ]
     ]);
 
 } else {
 
+    // Jika gagal
     echo json_encode([
         "status"  => "error",
         "message" => $stmt->error
@@ -39,6 +52,9 @@ if ($stmt->execute()) {
 
 }
 
+// Menutup statement
 $stmt->close();
+
+// Menutup koneksi database
 $conn->close();
 ?>
