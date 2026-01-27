@@ -30,6 +30,8 @@ $stmt->bind_param("iss", $user_id, $mood, $note);
 
 // Mengeksekusi query INSERT
 if ($stmt->execute()) {
+    // Jika eksekusi berhasil, ambil ID terakhir yang dimasukkan
+    $last_id = $stmt->insert_id;
 
     // Jika berhasil, kirim response JSON sukses
     echo json_encode([
@@ -58,5 +60,16 @@ $stmt->close();
 
 // Menutup koneksi database
 $conn->close();
+
+/*
+PETUNJUK UNTUK MENYESUAIKAN DENGAN SCHEMA TABEL LAIN:
+
+Jika ingin menggunakan skema tabel yang berbeda, ubah bagian-bagian berikut:
+1. Nama tabel: Ganti 'tb_mahasiswa' dengan nama tabel Anda
+2. Nama kolom: Ganti 'nim', 'nama', 'alamat', 'no_telp' sesuai dengan kolom di tabel Anda
+3. Parameter POST: Sesuaikan dengan nama field yang dikirim dari form Anda
+4. Tipe data parameter: Perhatikan tipe data saat menggunakan bind_param()
+   Misalnya: "iiis" untuk integer, integer, integer, string
+*/
 ?>
 
