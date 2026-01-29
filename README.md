@@ -215,6 +215,10 @@ Gunakan metode GET untuk READ
 
 Gunakan prepared statements untuk mencegah SQL Injection
 
+<<<<<<< HEAD
 Project ini dibuat sebagai latihan backend API PHP & MySQL
 
 ## ✨ Serenica – Peduli Kesehatan Mental Anak Muda Indonesia
+=======
+
+>>>>>>> 5b62f5c976cff0f09bebd85e50583080da53a31e
