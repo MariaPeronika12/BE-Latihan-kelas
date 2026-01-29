@@ -1,227 +1,191 @@
-# Aplikasi Manajemen Data Mahasiswa
+## Aplikasi Serenica – Mood Tracking Kesehatan Mental
 
-Aplikasi ini adalah sistem manajemen data mahasiswa sederhana yang dibangun dengan PHP dan MySQL. Sistem ini menyediakan fungsi CRUD (Create, Read, Update, Delete) untuk mengelola data mahasiswa.
+Serenica adalah aplikasi kesehatan mental anak muda Indonesia yang dibangun menggunakan PHP dan MySQL. Aplikasi ini menyediakan fungsi CRUD (Create, Read, Update, Delete) untuk mengelola data mood tracking pengguna, sehingga pengguna dapat mencatat dan memantau kondisi emosional mereka secara berkala.
 
 ## Deskripsi
 
-Aplikasi ini menyediakan empat endpoint utama untuk mengelola data mahasiswa:
-- **CREATE**: Menambahkan data mahasiswa baru
-- **READ**: Membaca/menampilkan data mahasiswa
-- **UPDATE**: Memperbarui data mahasiswa yang sudah ada
-- **DELETE**: Menghapus data mahasiswa
+Aplikasi Serenica menyediakan empat endpoint utama untuk mengelola data mood pengguna:
+
+CREATE: Menambahkan catatan mood baru
+
+READ: Menampilkan data mood pengguna
+
+UPDATE: Memperbarui catatan mood
+
+DELETE: Menghapus catatan mood
 
 Semua endpoint mengembalikan respons dalam format JSON.
 
-## Struktur Tabel
+Struktur Tabel
 
-Tabel `tb_mahasiswa` memiliki struktur sebagai berikut:
+Tabel mood_tracking memiliki struktur sebagai berikut:
 
-| Kolom     | Tipe Data | Deskripsi             |
-|-----------|-----------|------------------------|
-| id        | INT       | Primary Key, Auto Increment |
-| nim       | VARCHAR   | Nomor Induk Mahasiswa |
-| nama      | VARCHAR   | Nama lengkap mahasiswa |
-| alamat    | VARCHAR   | Alamat mahasiswa       |
-| no_telp   | VARCHAR   | Nomor telepon mahasiswa |
+Kolom	Tipe Data	Deskripsi
+mood_id	INT	Primary Key, Auto Increment
+user_id	INT	ID pengguna
+mood	VARCHAR	Kondisi suasana hati pengguna
+note	TEXT	Catatan tambahan pengguna
+created_at	DATETIME	Waktu pencatatan mood
+Endpoint
+1. CREATE – Menambahkan Data Mood Baru
 
-## Endpoint
+URL:
+/mood_tracking/create.php
 
-### 1. CREATE - Menambahkan Data Mahasiswa Baru
+Metode:
+POST
 
-**URL**: `/mahasiswa/create.php`
+Parameter:
 
-**Metode**: POST
+user_id (integer) – ID pengguna
 
-**Parameter**:
-- `nim` (string) - Nomor Induk Mahasiswa
-- `nama` (string) - Nama lengkap mahasiswa
-- `alamat` (string) - Alamat mahasiswa
-- `no_telp` (string) - Nomor telepon mahasiswa
+mood (string) – Suasana hati (senang, sedih, stres, dll)
 
-**Contoh Request**:
-```bash
+note (string) – Catatan tambahan
+
+created_at (datetime) – Waktu pencatatan
+
+Contoh Request:
+
 curl -X POST \
-  -d "nim=123456789" \
-  -d "nama=John Doe" \
-  -d "alamat=Jl. Contoh No. 123" \
-  -d "no_telp=081234567890" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/create.php
-```
+  -d "user_id=1" \
+  -d "mood=Senang" \
+  -d "note=Hari ini produktif" \
+  -d "created_at=2026-01-28 10:00:00" \
+  http://localhost/BE-Latihan-kelas/mood_tracking/create.php
 
-**Contoh Respons Sukses**:
-```json
+
+Contoh Respons Sukses:
+
 {
   "status": "success",
-  "message": "Data berhasil ditambahkan",
+  "message": "Mood berhasil ditambahkan",
   "data": {
-    "id": 1,
-    "nim": "123456789",
-    "nama": "John Doe",
-    "alamat": "Jl. Contoh No. 123",
-    "no_telp": "081234567890"
+    "mood_id": 1,
+    "user_id": 1,
+    "mood": "Senang",
+    "note": "Hari ini produktif",
+    "created_at": "2026-01-28 10:00:00"
   }
 }
-```
 
-**Contoh Respons Error**:
-```json
-{
-  "status": "error",
-  "message": "Error message here"
-}
-```
+2. READ – Membaca Data Mood
 
-### 2. READ - Membaca Data Mahasiswa
+URL:
+/mood_tracking/read.php
 
-**URL**: `/mahasiswa/read.php`
+Metode:
+GET
 
-**Metode**: GET
+Parameter (Opsional):
 
-**Parameter (Opsional)**:
-- `id` (integer) - Untuk mendapatkan data mahasiswa berdasarkan ID
-- `nim` (string) - Untuk mendapatkan data mahasiswa berdasarkan NIM
+mood_id (integer) – Menampilkan mood berdasarkan ID
 
-Jika tidak ada parameter, maka akan mengembalikan semua data mahasiswa.
+user_id (integer) – Menampilkan mood berdasarkan pengguna
 
-**Contoh Request (Semua Data)**:
-```bash
-curl http://localhost/BE-Latihan-kelas/mahasiswa/read.php
-```
+Jika tidak ada parameter, sistem akan menampilkan semua data mood.
 
-**Contoh Request (Spesifik ID)**:
-```bash
-curl http://localhost/BE-Latihan-kelas/mahasiswa/read.php?id=1
-```
+Contoh Request:
 
-**Contoh Request (Spesifik NIM)**:
-```bash
-curl http://localhost/BE-Latihan-kelas/mahasiswa/read.php?nim=123456789
-```
+curl http://localhost/BE-Latihan-kelas/mood_tracking/read.php?user_id=1
 
-**Contoh Respons Sukses (Semua Data)**:
-```json
+
+Contoh Respons Sukses:
+
 {
   "status": "success",
-  "message": "Data ditemukan",
+  "message": "Data mood ditemukan",
   "data": [
     {
-      "id": 1,
-      "nim": "123456789",
-      "nama": "John Doe",
-      "alamat": "Jl. Contoh No. 123",
-      "no_telp": "081234567890"
-    },
-    {
-      "id": 2,
-      "nim": "987654321",
-      "nama": "Jane Smith",
-      "alamat": "Jl. Contoh No. 456",
-      "no_telp": "089876543210"
+      "mood_id": 1,
+      "user_id": 1,
+      "mood": "Senang",
+      "note": "Hari ini produktif",
+      "created_at": "2026-01-28 10:00:00"
     }
   ]
 }
-```
 
-**Contoh Respons Sukses (Data Kosong)**:
-```json
-{
-  "status": "success",
-  "message": "Data kosong",
-  "data": []
-}
-```
+3. UPDATE – Memperbarui Data Mood
 
-### 3. UPDATE - Memperbarui Data Mahasiswa
+URL:
+/mood_tracking/update.php
 
-**URL**: `/mahasiswa/update.php`
+Metode:
+POST
 
-**Metode**: POST
+Parameter:
 
-**Parameter**:
-- `id` (integer) - ID mahasiswa yang akan diperbarui
-- `nim` (string) - Nomor Induk Mahasiswa baru
-- `nama` (string) - Nama lengkap mahasiswa baru
-- `alamat` (string) - Alamat mahasiswa baru
-- `no_telp` (string) - Nomor telepon mahasiswa baru
+mood_id (integer) – ID mood yang akan diperbarui
 
-**Contoh Request**:
-```bash
+mood (string) – Mood baru
+
+note (string) – Catatan baru
+
+Contoh Request:
+
 curl -X POST \
-  -d "id=1" \
-  -d "nim=123456789" \
-  -d "nama=John Updated" \
-  -d "alamat=Jl. Updated No. 123" \
-  -d "no_telp=081111111111" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/update.php
-```
+  -d "mood_id=1" \
+  -d "mood=Tenang" \
+  -d "note=Sudah lebih rileks" \
+  http://localhost/BE-Latihan-kelas/mood_tracking/update.php
 
-**Contoh Respons Sukses**:
-```json
+
+Contoh Respons Sukses:
+
 {
   "status": "success",
-  "message": "Data berhasil diperbarui",
-  "data": {
-    "id": 1,
-    "nim": "123456789",
-    "nama": "John Updated",
-    "alamat": "Jl. Updated No. 123",
-    "no_telp": "081111111111"
-  }
+  "message": "Mood berhasil diperbarui"
 }
-```
 
-**Contoh Respons Error**:
-```json
-{
-  "status": "error",
-  "message": "Error message here"
-}
-```
+4. DELETE – Menghapus Data Mood
 
-### 4. DELETE - Menghapus Data Mahasiswa
+URL:
+/mood_tracking/delete.php
 
-**URL**: `/mahasiswa/delete.php`
+Metode:
+POST
 
-**Metode**: POST
+Parameter:
 
-**Parameter**:
-- `id` (integer) - ID mahasiswa yang akan dihapus
+mood_id (integer) – ID mood yang akan dihapus
 
-**Contoh Request**:
-```bash
+Contoh Request:
+
 curl -X POST \
-  -d "id=1" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/delete.php
-```
+  -d "mood_id=1" \
+  http://localhost/BE-Latihan-kelas/mood_tracking/delete.php
 
-**Contoh Respons Sukses**:
-```json
+
+Contoh Respons Sukses:
+
 {
   "status": "success",
-  "message": "Data berhasil dihapus"
+  "message": "Mood berhasil dihapus"
 }
-```
 
-**Contoh Respons Error**:
-```json
-{
-  "status": "error",
-  "message": "Error message here"
-}
-```
+Instalasi
 
-## Instalasi
+Pastikan server web telah terpasang PHP dan MySQL
 
-1. Pastikan Anda memiliki server web dengan PHP dan MySQL
-2. Salin semua file ke direktori web server Anda
-3. Buat database MySQL dan import struktur tabel sesuai dengan deskripsi di atas
-4. Konfigurasi koneksi database di file `db.php`
-5. Akses endpoint sesuai kebutuhan
+Salin file project ke folder web server
 
-## Catatan
+Buat database serenica_db
 
-- Semua endpoint mengembalikan respons dalam format JSON
-- Gunakan metode POST untuk CREATE, UPDATE, dan DELETE
-- Gunakan metode GET untuk READ
-- Gunakan prepared statements untuk mencegah SQL injection
-- Pastikan untuk selalu mengecek status respons sebelum memproses data lebih lanjut
+Buat tabel mood_tracking sesuai struktur di atas
+
+Atur koneksi database pada file db.php
+
+Jalankan endpoint sesuai kebutuhan
+
+Catatan
+
+Semua endpoint menggunakan format JSON
+
+Gunakan metode POST untuk CREATE, UPDATE, DELETE
+
+Gunakan metode GET untuk READ
+
+Gunakan prepared statement untuk keamanan data
+
+Pastikan parameter dikirim dengan benar untuk menghindari error
