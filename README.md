@@ -2,7 +2,7 @@
 
 Serenica adalah aplikasi kesehatan mental anak muda Indonesia yang dibangun menggunakan PHP dan MySQL. Aplikasi ini menyediakan fungsi CRUD (Create, Read, Update, Delete) untuk mengelola data mood tracking pengguna, sehingga pengguna dapat mencatat dan memantau kondisi emosional mereka secara berkala.
 
-## Deskripsi
+Deskripsi
 
 Aplikasi Serenica menyediakan empat endpoint utama untuk mengelola data mood pengguna:
 
@@ -188,4 +188,8 @@ Gunakan metode GET untuk READ
 
 Gunakan prepared statement untuk keamanan data
 
+<<<<<<< HEAD
 Pastikan parameter dikirim dengan benar untuk menghindari error
+=======
+Pastikan parameter dikirim dengan benar untuk menghindari error
+>>>>>>> ea7042e51bba523680cdd290721110f358bc69aa

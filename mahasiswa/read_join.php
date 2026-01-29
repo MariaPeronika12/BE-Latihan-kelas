@@ -7,7 +7,7 @@ $sql = "
     SELECT 
         m.mood_id,
         u.user_id,
-        u.username,
+        u.username`,
         u.email,
         m.mood,
         m.note,
