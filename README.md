@@ -68,7 +68,7 @@ Method : POST
 
 Parameter :
 
-user_id (integer) – ID pengguna
+user_id (integer) – ID pengguna 
 
 mood (string) – Mood pengguna (senang, sedih, cemas, dll)
 
