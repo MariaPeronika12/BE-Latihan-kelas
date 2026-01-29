@@ -1,195 +1,220 @@
-## Aplikasi Serenica – Mood Tracking Kesehatan Mental
+## Serenica – Aplikasi Kesehatan Mental Anak Muda Indonesia
 
-Serenica adalah aplikasi kesehatan mental anak muda Indonesia yang dibangun menggunakan PHP dan MySQL. Aplikasi ini menyediakan fungsi CRUD (Create, Read, Update, Delete) untuk mengelola data mood tracking pengguna, sehingga pengguna dapat mencatat dan memantau kondisi emosional mereka secara berkala.
+Serenica adalah aplikasi backend sederhana berbasis PHP dan MySQL yang digunakan untuk mendukung aplikasi kesehatan mental anak muda Indonesia. Backend ini menyediakan fitur CRUD (Create, Read, Update, Delete) untuk mengelola data mood tracking pengguna.
 
-Deskripsi
+Semua endpoint menghasilkan respons dalam format JSON dan dirancang sebagai latihan backend API.
 
-Aplikasi Serenica menyediakan empat endpoint utama untuk mengelola data mood pengguna:
+## Deskripsi
 
-CREATE: Menambahkan catatan mood baru
+Aplikasi Serenica menyediakan empat endpoint utama untuk mengelola data mood tracking pengguna:
 
-READ: Menampilkan data mood pengguna
+## CREATE : Menambahkan data mood baru
 
-UPDATE: Memperbarui catatan mood
+## READ   : Membaca/menampilkan data mood
 
-DELETE: Menghapus catatan mood
+## UPDATE : Memperbarui data mood yang sudah ada
 
-Semua endpoint mengembalikan respons dalam format JSON.
+## DELETE : Menghapus data mood
 
-Struktur Tabel
+Aplikasi ini menggunakan database serenica_db.
+
+## Struktur Tabel
 
 Tabel mood_tracking memiliki struktur sebagai berikut:
 
-Kolom	Tipe Data	Deskripsi
-mood_id	INT	Primary Key, Auto Increment
-user_id	INT	ID pengguna
-mood	VARCHAR	Kondisi suasana hati pengguna
-note	TEXT	Catatan tambahan pengguna
-created_at	DATETIME	Waktu pencatatan mood
-Endpoint
-1. CREATE – Menambahkan Data Mood Baru
+Kolom
 
-URL:
-/mood_tracking/create.php
+Tipe Data
 
-Metode:
-POST
+Deskripsi
 
-Parameter:
+mood_id
+
+INT
+
+Primary Key, Auto Increment
+
+user_id
+
+INT
+
+ID pengguna
+
+mood
+
+VARCHAR
+
+Kondisi mood pengguna
+
+note
+
+TEXT
+
+Catatan tambahan pengguna
+
+created_at
+
+DATETIME
+
+Waktu pencatatan mood
+
+Endpoint API
+
+## 1. CREATE – Menambahkan Data Mood Baru
+
+URL : /mahasiswa/create.php
+
+Method : POST
+
+Parameter :
 
 user_id (integer) – ID pengguna
 
-mood (string) – Suasana hati (senang, sedih, stres, dll)
+mood (string) – Mood pengguna (senang, sedih, cemas, dll)
 
 note (string) – Catatan tambahan
 
 created_at (datetime) – Waktu pencatatan
 
-Contoh Request:
+Contoh Request :
 
 curl -X POST \
   -d "user_id=1" \
   -d "mood=Senang" \
-  -d "note=Hari ini produktif" \
-  -d "created_at=2026-01-28 10:00:00" \
-  http://localhost/BE-Latihan-kelas/mood_tracking/create.php
+  -d "note=Hari ini merasa lebih baik" \
+  -d "created_at=2025-01-29 10:00:00" \
+  http://localhost/BE-Latihan-kelas/mahasiswa/create.php
 
-
-Contoh Respons Sukses:
+Contoh Respons Sukses :
 
 {
   "status": "success",
-  "message": "Mood berhasil ditambahkan",
+  "message": "Data mood berhasil ditambahkan",
   "data": {
     "mood_id": 1,
     "user_id": 1,
     "mood": "Senang",
-    "note": "Hari ini produktif",
-    "created_at": "2026-01-28 10:00:00"
+    "note": "Hari ini merasa lebih baik",
+    "created_at": "2025-01-29 10:00:00"
   }
 }
 
-2. READ – Membaca Data Mood
+## 2. READ – Membaca Data Mood
 
-URL:
-/mood_tracking/read.php
+URL : /mahasiswa/read.php
 
-Metode:
-GET
+Method : GET
 
-Parameter (Opsional):
+Parameter (Opsional) :
 
-mood_id (integer) – Menampilkan mood berdasarkan ID
+mood_id (integer) – Menampilkan data berdasarkan ID mood
 
-user_id (integer) – Menampilkan mood berdasarkan pengguna
+user_id (integer) – Menampilkan data berdasarkan pengguna
 
-Jika tidak ada parameter, sistem akan menampilkan semua data mood.
+Jika tidak ada parameter, maka akan menampilkan seluruh data mood.
 
-Contoh Request:
+Contoh Request :
 
-curl http://localhost/BE-Latihan-kelas/mood_tracking/read.php?user_id=1
+curl http://localhost/BE-Latihan-kelas/mahasiswa/read.php
 
-
-Contoh Respons Sukses:
+Contoh Respons Sukses :
 
 {
   "status": "success",
-  "message": "Data mood ditemukan",
+  "message": "Data ditemukan",
   "data": [
     {
       "mood_id": 1,
       "user_id": 1,
       "mood": "Senang",
-      "note": "Hari ini produktif",
-      "created_at": "2026-01-28 10:00:00"
+      "note": "Hari ini merasa lebih baik",
+      "created_at": "2025-01-29 10:00:00"
     }
   ]
 }
 
-3. UPDATE – Memperbarui Data Mood
+## 3. UPDATE – Memperbarui Data Mood
 
-URL:
-/mood_tracking/update.php
+URL : /mahasiswa/update.php
 
-Metode:
-POST
+Method : POST
 
-Parameter:
+Parameter :
 
 mood_id (integer) – ID mood yang akan diperbarui
 
-mood (string) – Mood baru
+user_id (integer) – ID pengguna
 
-note (string) – Catatan baru
+mood (string) – Mood terbaru
 
-Contoh Request:
+note (string) – Catatan terbaru
+
+created_at (datetime) – Waktu pembaruan
+
+Contoh Request :
 
 curl -X POST \
   -d "mood_id=1" \
+  -d "user_id=1" \
   -d "mood=Tenang" \
-  -d "note=Sudah lebih rileks" \
-  http://localhost/BE-Latihan-kelas/mood_tracking/update.php
+  -d "note=Mulai merasa lebih stabil" \
+  -d "created_at=2025-01-29 12:00:00" \
+  http://localhost/BE-Latihan-kelas/mahasiswa/update.php
 
-
-Contoh Respons Sukses:
+Contoh Respons Sukses :
 
 {
   "status": "success",
-  "message": "Mood berhasil diperbarui"
+  "message": "Data mood berhasil diperbarui"
 }
 
-4. DELETE – Menghapus Data Mood
+## 4. DELETE – Menghapus Data Mood
 
-URL:
-/mood_tracking/delete.php
+URL : /mahasiswa/delete.php
 
-Metode:
-POST
+Method : POST
 
-Parameter:
+Parameter :
 
 mood_id (integer) – ID mood yang akan dihapus
 
-Contoh Request:
+Contoh Request :
 
 curl -X POST \
   -d "mood_id=1" \
-  http://localhost/BE-Latihan-kelas/mood_tracking/delete.php
+  http://localhost/BE-Latihan-kelas/mahasiswa/delete.php
 
-
-Contoh Respons Sukses:
+Contoh Respons Sukses :
 
 {
   "status": "success",
-  "message": "Mood berhasil dihapus"
+  "message": "Data mood berhasil dihapus"
 }
 
 Instalasi
 
-Pastikan server web telah terpasang PHP dan MySQL
+Pastikan PHP dan MySQL sudah terinstal
 
-Salin file project ke folder web server
+Salin folder project ke direktori web server (Laragon/XAMPP)
 
-Buat database serenica_db
+Buat database dengan nama serenica_db
 
-Buat tabel mood_tracking sesuai struktur di atas
+Import tabel mood_tracking
 
-Atur koneksi database pada file db.php
+Atur koneksi database di file db.php
 
-Jalankan endpoint sesuai kebutuhan
+Jalankan endpoint menggunakan browser atau Postman
 
 Catatan
 
-Semua endpoint menggunakan format JSON
+Semua respons menggunakan format JSON
 
-Gunakan metode POST untuk CREATE, UPDATE, DELETE
+Gunakan metode POST untuk CREATE, UPDATE, dan DELETE
 
 Gunakan metode GET untuk READ
 
-Gunakan prepared statement untuk keamanan data
+Gunakan prepared statements untuk mencegah SQL Injection
 
-<<<<<<< HEAD
-Pastikan parameter dikirim dengan benar untuk menghindari error
-=======
-Pastikan parameter dikirim dengan benar untuk menghindari error
->>>>>>> ea7042e51bba523680cdd290721110f358bc69aa
+Project ini dibuat sebagai latihan backend API PHP & MySQL
+
+## ✨ Serenica – Peduli Kesehatan Mental Anak Muda Indonesia
