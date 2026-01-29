@@ -188,8 +188,4 @@ Gunakan metode GET untuk READ
 
 Gunakan prepared statement untuk keamanan data
 
-<<<<<<< HEAD
-Pastikan parameter dikirim dengan benar untuk menghindari error
-=======
-Pastikan parameter dikirim dengan benar untuk menghindari error
->>>>>>> ea7042e51bba523680cdd290721110f358bc69aa
+
