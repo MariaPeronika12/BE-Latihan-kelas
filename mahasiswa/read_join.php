@@ -1,40 +1,60 @@
 <?php
-header("Content-Type: application/json");
-include "../db.php";
+header('Content-Type: application/json');
 
-// QUERY JOIN
-$sql = "
-    SELECT 
-        m.mood_id,
-        u.user_id,
-        u.username`,
-        u.email,
-        m.mood,
-        m.note,
-        m.created_at
-    FROM mood_tracking m
-    INNER JOIN users u ON m.user_id = u.user_id
-";
+/* =============================
+   KONEKSI DATABASE
+   ============================= */
+include __DIR__ . '/../koneksi.php';
 
-$result = mysqli_query($conn, $sql);
-
-if (!$result) {
+/* =============================
+   VALIDASI PARAMETER
+   ============================= */
+if (!isset($_GET['chat_id'])) {
     echo json_encode([
-        "status" => "error",
-        "message" => mysqli_error($conn)
+        "status" => false,
+        "message" => "chat_id wajib diisi"
     ]);
     exit;
 }
 
+$chat_id = intval($_GET['chat_id']);
+
+/* =============================
+   QUERY JOIN (AMAN)
+   ============================= */
+$sql = "
+    SELECT 
+        c.chat_id,
+        c.pesan,
+        c.created_at,
+        u.user_id,
+        u.nama AS nama_user
+    FROM edu_konseling_chat c
+    JOIN users u ON c.user_id = u.user_id
+    WHERE c.chat_id = ?
+";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $chat_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+/* =============================
+   HASIL
+   ============================= */
 $data = [];
-while ($row = mysqli_fetch_assoc($result)) {
+
+while ($row = $result->fetch_assoc()) {
     $data[] = $row;
 }
 
+$stmt->close();
+$conn->close();
+
+/* =============================
+   RESPONSE
+   ============================= */
 echo json_encode([
-    "status" => "success",
-    "message" => count($data) > 0 ? "Data berhasil ditampilkan" : "Data kosong",
+    "status" => true,
     "data" => $data
 ]);
-
-exit;
