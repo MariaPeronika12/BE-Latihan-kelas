@@ -1,224 +1,249 @@
-## Serenica – Aplikasi Kesehatan Mental Anak Muda Indonesia
+# Serenica – Backend API Documentation
 
-Serenica adalah aplikasi backend sederhana berbasis PHP dan MySQL yang digunakan untuk mendukung aplikasi kesehatan mental anak muda Indonesia. Backend ini menyediakan fitur CRUD (Create, Read, Update, Delete) untuk mengelola data mood tracking pengguna.
+---
 
-Semua endpoint menghasilkan respons dalam format JSON dan dirancang sebagai latihan backend API.
+## Deskripsi Aplikasi
 
-## Deskripsi
+**Serenica** adalah aplikasi backend untuk mendukung **kesehatan mental anak muda Indonesia**. Aplikasi ini menyediakan fitur pencatatan suasana hati, jurnal emosi, edukasi konseling chat, serta audio relaksasi.
 
-Aplikasi Serenica menyediakan empat endpoint utama untuk mengelola data mood tracking pengguna:
+Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Create, Read, Update, Delete)** serta **JOIN antar tabel**.
 
-## CREATE : Menambahkan data mood baru
+---
 
-## READ   : Membaca/menampilkan data mood
+## Teknologi yang Digunakan
 
-## UPDATE : Memperbarui data mood yang sudah ada
+| Teknologi | Keterangan          |
+| --------- | ------------------- |
+| PHP       | Backend API         |
+| MySQL     | Database Relasional |
+| JSON      | Format Response     |
+| REST API  | CRUD & JOIN         |
 
-## DELETE : Menghapus data mood
+---
 
-Aplikasi ini menggunakan database serenica_db.
+## Daftar Tabel Database
 
-## Struktur Tabel
+| No | Nama Tabel         |
+| -- | ------------------ |
+| 1  | users              |
+| 2  | mood_tracking      |
+| 3  | jurnal_emosi       |
+| 4  | edu_konseling_chat |
+| 5  | audio_relaksasi    |
 
-Tabel mood_tracking memiliki struktur sebagai berikut:
+---
 
-Kolom
+## Tabel Users
 
-Tipe Data
+### Struktur Tabel
 
-Deskripsi
+| Kolom      | Tipe Data | Keterangan                  |
+| ---------- | --------- | --------------------------- |
+| user_id    | INT       | Primary Key, Auto Increment |
+| nama       | VARCHAR   | Nama pengguna               |
+| email      | VARCHAR   | Email pengguna              |
+| password   | VARCHAR   | Password (hashed)           |
+| usia       | INT       | Usia pengguna               |
+| created_at | DATETIME  | Waktu pendaftaran           |
 
-mood_id
+---
 
-INT
+## Tabel Mood Tracking
 
-Primary Key, Auto Increment
+### Struktur Tabel
 
-user_id
+| Kolom   | Tipe Data | Keterangan          |
+| ------- | --------- | ------------------- |
+| mood_id | INT       | Primary Key         |
+| user_id | INT       | Foreign Key (users) |
+| mood    | VARCHAR   | Mood pengguna       |
+| catatan | TEXT      | Catatan tambahan    |
+| tanggal | DATE      | Tanggal pencatatan  |
 
-INT
+---
 
-ID pengguna
+## Tabel Jurnal Emosi
 
-mood
+### Struktur Tabel
 
-VARCHAR
+| Kolom     | Tipe Data | Keterangan          |
+| --------- | --------- | ------------------- |
+| jurnal_id | INT       | Primary Key         |
+| user_id   | INT       | Foreign Key (users) |
+| emosi     | VARCHAR   | Jenis emosi         |
+| deskripsi | TEXT      | Catatan emosi       |
+| tanggal   | DATE      | Tanggal pencatatan  |
 
-Kondisi mood pengguna
+---
 
-note
+## Tabel Edukasi Konseling Chat
 
-TEXT
+### Struktur Tabel
 
-Catatan tambahan pengguna
+| Kolom   | Tipe Data | Keterangan          |
+| ------- | --------- | ------------------- |
+| chat_id | INT       | Primary Key         |
+| user_id | INT       | Foreign Key (users) |
+| pesan   | TEXT      | Pesan konseling     |
+| role    | VARCHAR   | user / admin        |
+| waktu   | DATETIME  | Waktu chat          |
 
-created_at
+---
 
-DATETIME
+## Tabel Audio Relaksasi
 
-Waktu pencatatan mood
+### Struktur Tabel
 
-Endpoint API
+| Kolom      | Tipe Data | Keterangan      |
+| ---------- | --------- | --------------- |
+| audio_id   | INT       | Primary Key     |
+| judul      | VARCHAR   | Judul audio     |
+| deskripsi  | TEXT      | Deskripsi audio |
+| file_audio | VARCHAR   | File audio      |
+| durasi     | VARCHAR   | Durasi audio    |
+| created_at | DATETIME  | Waktu upload    |
 
-## 1. CREATE – Menambahkan Data Mood Baru
+---
 
-URL : /mahasiswa/create.php
+## Catatan
 
-Method : POST
+* Semua response menggunakan format **JSON**
+* Relasi antar tabel menggunakan **Foreign Key**
+* Backend siap digunakan untuk **Web & Mobile App**
 
-Parameter :
+---
 
-user_id (integer) – ID pengguna 
+## Endpoint API Detail
 
-mood (string) – Mood pengguna (senang, sedih, cemas, dll)
+---
 
-note (string) – Catatan tambahan
+## Users (CRUD)
 
-created_at (datetime) – Waktu pencatatan
+### CREATE User
 
-Contoh Request :
+* URL: `/users/create.php`
+* Method: POST
 
-curl -X POST \
-  -d "user_id=1" \
-  -d "mood=Senang" \
-  -d "note=Hari ini merasa lebih baik" \
-  -d "created_at=2025-01-29 10:00:00" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/create.php
-
-Contoh Respons Sukses :
-
+```json
 {
-  "status": "success",
-  "message": "Data mood berhasil ditambahkan",
-  "data": {
-    "mood_id": 1,
-    "user_id": 1,
-    "mood": "Senang",
-    "note": "Hari ini merasa lebih baik",
-    "created_at": "2025-01-29 10:00:00"
-  }
+  "nama": "Andi",
+  "email": "andi@gmail.com",
+  "password": "123456",
+  "usia": 20
 }
+```
 
-## 2. READ – Membaca Data Mood
+### READ Users
 
-URL : /mahasiswa/read.php
+* URL: `/users/read.php`
+* Method: GET
 
-Method : GET
+### UPDATE User
 
-Parameter (Opsional) :
+* URL: `/users/update.php`
+* Method: POST
 
-mood_id (integer) – Menampilkan data berdasarkan ID mood
+### DELETE User
 
-user_id (integer) – Menampilkan data berdasarkan pengguna
+* URL: `/users/delete.php`
+* Method: POST
 
-Jika tidak ada parameter, maka akan menampilkan seluruh data mood.
+---
 
-Contoh Request :
+## Mood Tracking (CRUD)
 
-curl http://localhost/BE-Latihan-kelas/mahasiswa/read.php
+### CREATE Mood
 
-Contoh Respons Sukses :
+* URL: `/mood_tracking/create.php`
+* Method: POST
 
+```json
+{
+  "user_id": 1,
+  "mood": "Bahagia",
+  "catatan": "Hari ini produktif"
+}
+```
+
+### READ Mood
+
+* URL: `/mood_tracking/read.php`
+* Method: GET
+
+---
+
+## Jurnal Emosi (CRUD)
+
+### CREATE Jurnal
+
+* URL: `/jurnal_emosi/create.php`
+* Method: POST
+
+```json
+{
+  "user_id": 1,
+  "emosi": "Sedih",
+  "deskripsi": "Merasa tertekan"
+}
+```
+
+---
+
+## Edukasi Konseling Chat (CRUD)
+
+### CREATE Chat
+
+* URL: `/edu_konseling_chat/create.php`
+* Method: POST
+
+```json
+{
+  "user_id": 1,
+  "pesan": "Saya merasa cemas",
+  "role": "user"
+}
+```
+
+---
+
+## Audio Relaksasi (CRUD)
+
+### CREATE Audio
+
+* URL: `/audio_relaksasi/create.php`
+* Method: POST
+
+```json
+{
+  "judul": "Meditasi Pagi",
+  "deskripsi": "Audio relaksasi pagi",
+  "durasi": "05:00"
+}
+```
+
+---
+
+## Contoh JOIN Data
+
+### JOIN Users & Mood Tracking
+
+* URL: `/mood_tracking/read_join_users.php`
+* Method: GET
+
+```json
 {
   "status": "success",
-  "message": "Data ditemukan",
   "data": [
     {
-      "mood_id": 1,
-      "user_id": 1,
-      "mood": "Senang",
-      "note": "Hari ini merasa lebih baik",
-      "created_at": "2025-01-29 10:00:00"
+      "nama": "Andi",
+      "mood": "Bahagia",
+      "tanggal": "2026-02-04"
     }
   ]
 }
+```
 
-## 3. UPDATE – Memperbarui Data Mood
+---
 
-URL : /mahasiswa/update.php
-
-Method : POST
-
-Parameter :
-
-mood_id (integer) – ID mood yang akan diperbarui
-
-user_id (integer) – ID pengguna
-
-mood (string) – Mood terbaru
-
-note (string) – Catatan terbaru
-
-created_at (datetime) – Waktu pembaruan
-
-Contoh Request :
-
-curl -X POST \
-  -d "mood_id=1" \
-  -d "user_id=1" \
-  -d "mood=Tenang" \
-  -d "note=Mulai merasa lebih stabil" \
-  -d "created_at=2025-01-29 12:00:00" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/update.php
-
-Contoh Respons Sukses :
-
-{
-  "status": "success",
-  "message": "Data mood berhasil diperbarui"
-}
-
-## 4. DELETE – Menghapus Data Mood
-
-URL : /mahasiswa/delete.php
-
-Method : POST
-
-Parameter :
-
-mood_id (integer) – ID mood yang akan dihapus
-
-Contoh Request :
-
-curl -X POST \
-  -d "mood_id=1" \
-  http://localhost/BE-Latihan-kelas/mahasiswa/delete.php
-
-Contoh Respons Sukses :
-
-{
-  "status": "success",
-  "message": "Data mood berhasil dihapus"
-}
-
-Instalasi
-
-Pastikan PHP dan MySQL sudah terinstal
-
-Salin folder project ke direktori web server (Laragon/XAMPP)
-
-Buat database dengan nama serenica_db
-
-Import tabel mood_tracking
-
-Atur koneksi database di file db.php
-
-Jalankan endpoint menggunakan browser atau Postman
-
-Catatan
-
-Semua respons menggunakan format JSON
-
-Gunakan metode POST untuk CREATE, UPDATE, dan DELETE
-
-Gunakan metode GET untuk READ
-
-Gunakan prepared statements untuk mencegah SQL Injection
-
-<<<<<<< HEAD
-Project ini dibuat sebagai latihan backend API PHP & MySQL
-
-## ✨ Serenica – Peduli Kesehatan Mental Anak Muda Indonesia
-=======
-
->>>>>>> 5b62f5c976cff0f09bebd85e50583080da53a31e
+**Serenica – Backend API**
+Aplikasi Kesehatan Mental Anak Muda Indonesia
