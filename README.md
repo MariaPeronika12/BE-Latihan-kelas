@@ -1,27 +1,27 @@
-# Serenica – Backend API Documentation
+# 🌿 Serenica – Backend API Documentation
 
 ---
 
-## Deskripsi Aplikasi
+## 📌 Deskripsi Aplikasi
 
-**Serenica** adalah aplikasi backend untuk mendukung **kesehatan mental anak muda Indonesia**. Aplikasi ini menyediakan fitur pencatatan suasana hati, jurnal emosi, edukasi konseling chat, serta audio relaksasi.
+**Serenica** adalah aplikasi backend yang dirancang untuk mendukung **kesehatan mental anak muda Indonesia**. Sistem ini menyediakan berbagai fitur seperti pencatatan mood, jurnal emosi, komunitas, self-care, hingga konsultasi berbasis AI.
 
-Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Create, Read, Update, Delete)** serta **JOIN antar tabel**.
-
----
-
-## Teknologi yang Digunakan
-
-| Teknologi | Keterangan          |
-| --------- | ------------------- |
-| PHP       | Backend API         |
-| MySQL     | Database Relasional |
-| JSON      | Format Response     |
-| REST API  | CRUD & JOIN         |
+Backend dikembangkan menggunakan **PHP & MySQL** dengan arsitektur **REST API** yang mendukung operasi **CRUD (Create, Read, Update, Delete)** serta **JOIN antar tabel** untuk kebutuhan relasi data.
 
 ---
 
-## Daftar Tabel Database
+## ⚙️ Teknologi yang Digunakan
+
+| Teknologi | Keterangan               |
+| --------- | ------------------------ |
+| PHP       | Backend API              |
+| MySQL     | Database Relasional      |
+| JSON      | Format Response          |
+| REST API  | Komunikasi Client–Server |
+
+---
+
+## 🗂️ Daftar Tabel Database
 
 | No | Nama Tabel         |
 | -- | ------------------ |
@@ -30,12 +30,17 @@ Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Cr
 | 3  | jurnal_emosi       |
 | 4  | edu_konseling_chat |
 | 5  | audio_relaksasi    |
+| 6  | curhat_ai          |
+| 7  | insight_mingguan   |
+| 8  | komunitas          |
+| 9  | self_care          |
+| 10 | pengaturan         |
 
 ---
 
-## Tabel Users
+# 📊 Struktur Database
 
-### Struktur Tabel
+## 👤 Tabel Users
 
 | Kolom      | Tipe Data | Keterangan                  |
 | ---------- | --------- | --------------------------- |
@@ -48,9 +53,7 @@ Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Cr
 
 ---
 
-## Tabel Mood Tracking
-
-### Struktur Tabel
+## 😊 Tabel Mood Tracking
 
 | Kolom   | Tipe Data | Keterangan          |
 | ------- | --------- | ------------------- |
@@ -62,182 +65,187 @@ Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Cr
 
 ---
 
-## Tabel Jurnal Emosi
+## 📖 Tabel Jurnal Emosi
 
-### Struktur Tabel
-
-| Kolom     | Tipe Data | Keterangan          |
-| --------- | --------- | ------------------- |
-| jurnal_id | INT       | Primary Key         |
-| user_id   | INT       | Foreign Key (users) |
-| emosi     | VARCHAR   | Jenis emosi         |
-| deskripsi | TEXT      | Catatan emosi       |
-| tanggal   | DATE      | Tanggal pencatatan  |
+| Kolom     | Tipe Data | Keterangan     |
+| --------- | --------- | -------------- |
+| jurnal_id | INT       | Primary Key    |
+| user_id   | INT       | Foreign Key    |
+| emosi     | VARCHAR   | Jenis emosi    |
+| deskripsi | TEXT      | Catatan emosi  |
+| tanggal   | DATE      | Tanggal dibuat |
 
 ---
 
-## Tabel Edukasi Konseling Chat
+## 💬 Tabel Edu Konseling Chat
 
-### Struktur Tabel
-
-| Kolom   | Tipe Data | Keterangan          |
-| ------- | --------- | ------------------- |
-| chat_id | INT       | Primary Key         |
-| user_id | INT       | Foreign Key (users) |
-| pesan   | TEXT      | Pesan konseling     |
-| role    | VARCHAR   | user / admin        |
-| waktu   | DATETIME  | Waktu chat          |
+| Kolom   | Tipe Data | Keterangan   |
+| ------- | --------- | ------------ |
+| chat_id | INT       | Primary Key  |
+| user_id | INT       | Foreign Key  |
+| pesan   | TEXT      | Isi pesan    |
+| role    | VARCHAR   | user / admin |
+| waktu   | DATETIME  | Waktu chat   |
 
 ---
 
-## Tabel Audio Relaksasi
+## 🎧 Tabel Audio Relaksasi
 
-### Struktur Tabel
+| Kolom      | Tipe Data | Keterangan   |
+| ---------- | --------- | ------------ |
+| audio_id   | INT       | Primary Key  |
+| judul      | VARCHAR   | Judul audio  |
+| deskripsi  | TEXT      | Deskripsi    |
+| file_audio | VARCHAR   | Lokasi file  |
+| durasi     | VARCHAR   | Durasi audio |
+| created_at | DATETIME  | Waktu upload |
+
+---
+
+## 🤖 Tabel Curhat AI
 
 | Kolom      | Tipe Data | Keterangan      |
 | ---------- | --------- | --------------- |
-| audio_id   | INT       | Primary Key     |
-| judul      | VARCHAR   | Judul audio     |
-| deskripsi  | TEXT      | Deskripsi audio |
-| file_audio | VARCHAR   | File audio      |
-| durasi     | VARCHAR   | Durasi audio    |
-| created_at | DATETIME  | Waktu upload    |
+| curhat_id  | INT       | Primary Key     |
+| user_id    | INT       | Foreign Key     |
+| pesan_user | TEXT      | Pesan dari user |
+| respon_ai  | TEXT      | Balasan AI      |
+| created_at | DATETIME  | Waktu curhat    |
 
 ---
 
-## Catatan
+## 📈 Tabel Insight Mingguan
 
-* Semua response menggunakan format **JSON**
-* Relasi antar tabel menggunakan **Foreign Key**
-* Backend siap digunakan untuk **Web & Mobile App**
+| Kolom          | Tipe Data | Keterangan               |
+| -------------- | --------- | ------------------------ |
+| insight_id     | INT       | Primary Key              |
+| user_id        | INT       | Foreign Key              |
+| ringkasan_mood | TEXT      | Ringkasan kondisi mental |
+| skor_kesehatan | INT       | Skor kesehatan mental    |
+| minggu_ke      | INT       | Minggu ke-               |
+| created_at     | DATETIME  | Tanggal dibuat           |
 
 ---
 
-## Endpoint API Detail
+## 🌐 Tabel Komunitas
+
+| Kolom        | Tipe Data | Keterangan    |
+| ------------ | --------- | ------------- |
+| komunitas_id | INT       | Primary Key   |
+| user_id      | INT       | Foreign Key   |
+| judul_post   | VARCHAR   | Judul diskusi |
+| isi_post     | TEXT      | Isi postingan |
+| created_at   | DATETIME  | Waktu posting |
 
 ---
 
-## Users (CRUD)
+## 🌸 Tabel Self Care
 
-### CREATE User
+| Kolom       | Tipe Data | Keterangan          |
+| ----------- | --------- | ------------------- |
+| selfcare_id | INT       | Primary Key         |
+| user_id     | INT       | Foreign Key         |
+| aktivitas   | VARCHAR   | Aktivitas self care |
+| deskripsi   | TEXT      | Detail aktivitas    |
+| tanggal     | DATE      | Tanggal dilakukan   |
 
-* URL: `/users/create.php`
-* Method: POST
+---
+
+## ⚙️ Tabel Pengaturan
+
+| Kolom         | Tipe Data | Keterangan        |
+| ------------- | --------- | ----------------- |
+| pengaturan_id | INT       | Primary Key       |
+| user_id       | INT       | Foreign Key       |
+| notifikasi    | BOOLEAN   | Status notifikasi |
+| mode_gelap    | BOOLEAN   | Dark mode         |
+| bahasa        | VARCHAR   | Bahasa aplikasi   |
+
+---
+
+# 🚀 Endpoint API
+
+## 📌 Format Response Standar
+
+### ✅ Response Sukses
 
 ```json
 {
-  "nama": "Andi",
-  "email": "andi@gmail.com",
+  "status": "success",
+  "message": "Data berhasil diproses",
+  "data": {}
+}
+```
+
+### ❌ Response Error
+
+```json
+{
+  "status": "error",
+  "message": "Terjadi kesalahan pada server"
+}
+```
+
+### 📭 Response Data Kosong
+
+```json
+{
+  "status": "success",
+  "message": "Data tidak ditemukan",
+  "data": []
+}
+```
+
+---
+
+# 🔥 Users (CRUD + JOIN)
+
+### ✅ CREATE
+
+* **URL:** `/users/create.php`
+* **Method:** POST
+
+```json
+{
+  "nama": "Budi",
+  "email": "budi@gmail.com",
   "password": "123456",
-  "usia": 20
+  "usia": 21
 }
 ```
 
-### READ Users
+### 📖 READ
 
-* URL: `/users/read.php`
-* Method: GET
+* **URL:** `/users/read.php`
+* **Method:** GET
 
-### UPDATE User
+### ✏️ UPDATE
 
-* URL: `/users/update.php`
-* Method: POST
+* **URL:** `/users/update.php`
+* **Method:** POST
 
-### DELETE User
+### 🗑️ DELETE
 
-* URL: `/users/delete.php`
-* Method: POST
-
----
-
-## Mood Tracking (CRUD)
-
-### CREATE Mood
-
-* URL: `/mood_tracking/create.php`
-* Method: POST
-
-```json
-{
-  "user_id": 1,
-  "mood": "Bahagia",
-  "catatan": "Hari ini produktif"
-}
-```
-
-### READ Mood
-
-* URL: `/mood_tracking/read.php`
-* Method: GET
+* **URL:** `/users/delete.php`
+* **Method:** POST
 
 ---
 
-## Jurnal Emosi (CRUD)
+# 🔗 Contoh JOIN
 
-### CREATE Jurnal
+## JOIN Users + Mood Tracking
 
-* URL: `/jurnal_emosi/create.php`
-* Method: POST
-
-```json
-{
-  "user_id": 1,
-  "emosi": "Sedih",
-  "deskripsi": "Merasa tertekan"
-}
-```
-
----
-
-## Edukasi Konseling Chat (CRUD)
-
-### CREATE Chat
-
-* URL: `/edu_konseling_chat/create.php`
-* Method: POST
-
-```json
-{
-  "user_id": 1,
-  "pesan": "Saya merasa cemas",
-  "role": "user"
-}
-```
-
----
-
-## Audio Relaksasi (CRUD)
-
-### CREATE Audio
-
-* URL: `/audio_relaksasi/create.php`
-* Method: POST
-
-```json
-{
-  "judul": "Meditasi Pagi",
-  "deskripsi": "Audio relaksasi pagi",
-  "durasi": "05:00"
-}
-```
-
----
-
-## Contoh JOIN Data
-
-### JOIN Users & Mood Tracking
-
-* URL: `/mood_tracking/read_join_users.php`
-* Method: GET
+* **URL:** `/mood_tracking/read_join_users.php`
+* **Method:** GET
 
 ```json
 {
   "status": "success",
   "data": [
     {
-      "nama": "Andi",
+      "nama": "Budi",
       "mood": "Bahagia",
-      "tanggal": "2026-02-04"
+      "tanggal": "2026-02-10"
     }
   ]
 }
@@ -245,5 +253,15 @@ Backend dikembangkan menggunakan **PHP & MySQL**, dengan API berbasis **CRUD (Cr
 
 ---
 
-**Serenica – Backend API**
-Aplikasi Kesehatan Mental Anak Muda Indonesia
+# 📌 Catatan Penting
+
+✅ Semua response menggunakan format **JSON**
+✅ Relasi tabel menggunakan **Foreign Key**
+✅ Backend siap digunakan untuk **Web maupun Mobile Apps**
+✅ Struktur API dibuat modular agar mudah dikembangkan
+
+---
+
+# 🌿 Serenica Backend API
+
+> Mendukung kesehatan mental anak muda Indonesia melalui teknologi yang aman, cepat, dan terstruktur.
